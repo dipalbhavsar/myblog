@@ -20,7 +20,7 @@ jobs:
           node-version: "20.x"
 
       - name: Installing my packages
-        run: npm ci
+        run: npm i --force
 
       - name: Extract repository name
         run: echo "BASE_PATH=/$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)" >> $GITHUB_ENV
