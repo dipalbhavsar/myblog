@@ -61,7 +61,7 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
     output: "export",
-    basePath: "myblog",
+    basePath: "/myblog",
     images: {
       remotePatterns: [
         {
