@@ -45,9 +45,7 @@ yarn-error.log*
 .env.production.local
 
 # Contentlayer
-.contentlayer
-
-package-lock.json
+.Contentlayer
 yarn.lock
 /node_modules/*
 node_modules
