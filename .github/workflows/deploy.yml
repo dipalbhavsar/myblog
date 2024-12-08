@@ -1,36 +1,36 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: GitHub Pages deploy
+# name: GitHub Pages deploy
 
-on:
-  push:
-    branches: [master]
+# on:
+#   push:
+#     branches: [master]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4.1.3
-      - name: Use Node.js 20.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: "20.x"
+#     steps:
+#       - name: Checkout 🛎️
+#         uses: actions/checkout@v4.1.3
+#       - name: Use Node.js 20.x
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: "20.x"
 
-      - name: Installing my packages
-        run: npm i --force
+#       - name: Installing my packages
+#         run: npm i --force
 
-      - name: Extract repository name
-        run: echo "BASE_PATH=/$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)" >> $GITHUB_ENV
+#       - name: Extract repository name
+#         run: echo "BASE_PATH=/$(echo $GITHUB_REPOSITORY | cut -d '/' -f 2)" >> $GITHUB_ENV
 
-      - name: Build my App
-        run: npm run build
+#       - name: Build my App
+#         run: npm run build
 
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.6.0
-        with:
-          token: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaLAfrVOnMT6v6JukpvkJbwMQr3vxdJysE/Xxmskv3wAeyr6FllrG7ucX13tx0MMVf/aAoaIQYFYVme+PeiP07M1Jhme7qLO7ALFdkxPVvuur/zGTf/KXDJYcAxZ2WaRG51SoCwCaddsHtDhtD/EVCVs+1aEWCJA7BRCyII14BZC4gqD/CWb9kIz+wANgZpN/w+2bhP+jGAZwIAgr3qhhdwX+FApEYEzB7mi09GgYrdfGeQrXqIZ4cXausREls5Mkp54ZYGG/igu57u85AICLZW+/XJoe6PVOo/Xm8d6IdmPYSq7rPTfeb/AXCHBoV4CrKDxoDfz0BNta6oCU51fM6578vbF17uy58dpS7wm3gDS4Wfm1zOGgd1unt5WgXWWeF+S8OxlxlYpgGb7YqHpagiogR69wQT2tQr8HjaJGLR6uq6R6L8AKth7z81t5J1rLkwPTC3ucVx1MKqhX25wljoXaT69S/mn9e0nK/Bnk4fh/aemcTqWJ+Gy4znD3Dv93AOoAwe1wFUnrw6abp46sHOUQdQWqRfu+CJy4w+enqll1gZ/BKMRmopq51XdCHqsaK4hvNoRn25kr6kSW5hTqqYeY+DvR70Rq9eTwQgkClWfvLyVe5GGswgxaZ19z2cc9yS5OtafTOOpjfo09Am0tHRgs/HJcPyLrPUACKX7+ncQ== dipal.bhavsar@gmail.com
-          branch: public # The branch the action should deploy to.
-          folder: out # The folder the action should deploy to.
+#       - name: Deploy 🚀
+#         uses: JamesIves/github-pages-deploy-action@v4.6.0
+#         with:
+#           token: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaLAfrVOnMT6v6JukpvkJbwMQr3vxdJysE/Xxmskv3wAeyr6FllrG7ucX13tx0MMVf/aAoaIQYFYVme+PeiP07M1Jhme7qLO7ALFdkxPVvuur/zGTf/KXDJYcAxZ2WaRG51SoCwCaddsHtDhtD/EVCVs+1aEWCJA7BRCyII14BZC4gqD/CWb9kIz+wANgZpN/w+2bhP+jGAZwIAgr3qhhdwX+FApEYEzB7mi09GgYrdfGeQrXqIZ4cXausREls5Mkp54ZYGG/igu57u85AICLZW+/XJoe6PVOo/Xm8d6IdmPYSq7rPTfeb/AXCHBoV4CrKDxoDfz0BNta6oCU51fM6578vbF17uy58dpS7wm3gDS4Wfm1zOGgd1unt5WgXWWeF+S8OxlxlYpgGb7YqHpagiogR69wQT2tQr8HjaJGLR6uq6R6L8AKth7z81t5J1rLkwPTC3ucVx1MKqhX25wljoXaT69S/mn9e0nK/Bnk4fh/aemcTqWJ+Gy4znD3Dv93AOoAwe1wFUnrw6abp46sHOUQdQWqRfu+CJy4w+enqll1gZ/BKMRmopq51XdCHqsaK4hvNoRn25kr6kSW5hTqqYeY+DvR70Rq9eTwQgkClWfvLyVe5GGswgxaZ19z2cc9yS5OtafTOOpjfo09Am0tHRgs/HJcPyLrPUACKX7+ncQ== dipal.bhavsar@gmail.com
+#           branch: public # The branch the action should deploy to.
+#           folder: out # The folder the action should deploy to.
