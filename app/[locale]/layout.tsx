@@ -23,7 +23,7 @@ const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-space-grotesk',
-  adjustFontFallback: true
+  adjustFontFallback: false
 })
 
 export async function generateMetadata({ params: { locale } }): Promise<Metadata> {
