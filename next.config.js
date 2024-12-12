@@ -61,8 +61,6 @@ module.exports = () => {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
     swcMinify: true,
-    // output: "export",
-    // basePath: "/myblog",
     images: {
       remotePatterns: [
         {
