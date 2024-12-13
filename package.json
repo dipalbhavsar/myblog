@@ -82,5 +82,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "^pnpm@6.32.4"
 }
