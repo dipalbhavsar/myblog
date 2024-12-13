@@ -1,4 +1,4 @@
-name: setup-node
+name: myblog-setup-node
 description: "Setup Node.js ⚙️ - Cache dependencies ⚡ - Install dependencies 🔧"
 runs:
   using: "composite"

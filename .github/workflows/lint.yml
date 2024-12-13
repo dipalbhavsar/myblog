@@ -1,4 +1,4 @@
-name: lint
+name: myblog-lint
 on: push
 
 jobs:

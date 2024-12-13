@@ -1,4 +1,4 @@
-name: check-code-style
+name: myblog-check-code-style
 on: push
 
 jobs:
