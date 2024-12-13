@@ -1,9 +1,4 @@
-import {
-  defineDocumentType,
-  ComputedFields,
-  makeSource,
-  defineNestedType,
-} from 'contentlayer2/source-files'
+import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
 import { writeFileSync } from 'fs'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
@@ -23,12 +18,12 @@ import {
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeKatex from 'rehype-katex'
+import rehypeKatexNoTranslate from 'rehype-katex-notranslate'
 import rehypeCitation from 'rehype-citation'
 import rehypePrismPlus from 'rehype-prism-plus'
 import rehypePresetMinify from 'rehype-preset-minify'
 import siteMetadata from './data/siteMetadata'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
-import { fallbackLng, secondLng } from './app/[locale]/i18n/locales'
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
@@ -50,11 +45,7 @@ const computedFields: ComputedFields = {
   readingTime: { type: 'json', resolve: (doc) => readingTime(doc.body.raw) },
   slug: {
     type: 'string',
-    resolve: (doc) => {
-      // Split the flattenedPath by '/' and take the last part
-      const pathParts = doc._raw.flattenedPath.split('/');
-      return pathParts.slice(2).join('/')
-    },
+    resolve: (doc) => doc._raw.flattenedPath.replace(/^.+?(\/)/, ''),
   },
   path: {
     type: 'string',
@@ -64,34 +55,27 @@ const computedFields: ComputedFields = {
     type: 'string',
     resolve: (doc) => doc._raw.sourceFilePath,
   },
-  toc: { type: 'string', resolve: (doc) => extractTocHeadings(doc.body.raw) },
-};
+  toc: { type: 'json', resolve: (doc) => extractTocHeadings(doc.body.raw) },
+}
 
 /**
  * Count the occurrences of all tags across blog posts and write to json file
- * Add logic to your own locales and project
  */
-
 function createTagCount(allBlogs) {
-  const tagCount = {
-    [fallbackLng]: {},
-    [secondLng]: {},
-  }
-
+  const tagCount: Record<string, number> = {}
   allBlogs.forEach((file) => {
     if (file.tags && (!isProduction || file.draft !== true)) {
-      file.tags.forEach((tag: string) => {
+      file.tags.forEach((tag) => {
         const formattedTag = slug(tag)
-        if (file.language === fallbackLng) {
-          tagCount[fallbackLng][formattedTag] = (tagCount[fallbackLng][formattedTag] || 0) + 1
-        } else if (file.language === secondLng) {
-          tagCount[secondLng][formattedTag] = (tagCount[secondLng][formattedTag] || 0) + 1
+        if (formattedTag in tagCount) {
+          tagCount[formattedTag] += 1
+        } else {
+          tagCount[formattedTag] = 1
         }
       })
     }
   })
-
-  writeFileSync('./app/[locale]/tag-data.json', JSON.stringify(tagCount))
+  writeFileSync('./app/tag-data.json', JSON.stringify(tagCount))
 }
 
 function createSearchIndex(allBlogs) {
@@ -100,26 +84,12 @@ function createSearchIndex(allBlogs) {
     siteMetadata.search.kbarConfig.searchDocumentsPath
   ) {
     writeFileSync(
-      `public/${siteMetadata.search.kbarConfig.searchDocumentsPath}`,
+      `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
       JSON.stringify(allCoreContent(sortPosts(allBlogs)))
     )
     console.log('Local search index generated...')
   }
 }
-
-export const Series = defineNestedType(() => ({
-  name: 'Series',
-  fields: {
-    title: {
-      type: 'string',
-      required: true,
-    },
-    order: {
-      type: 'number',
-      required: true,
-    },
-  },
-}))
 
 export const Blog = defineDocumentType(() => ({
   name: 'Blog',
@@ -127,23 +97,19 @@ export const Blog = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     title: { type: 'string', required: true },
-    series: { type: 'nested', of: Series },
     date: { type: 'date', required: true },
-    language: { type: 'string', required: true },
     tags: { type: 'list', of: { type: 'string' }, default: [] },
     lastmod: { type: 'date' },
-    featured: { type: 'boolean' },
     draft: { type: 'boolean' },
     summary: { type: 'string' },
     images: { type: 'json' },
-    authors: { type: 'list', of: { type: 'string' }, required: true },
+    authors: { type: 'list', of: { type: 'string' } },
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
   },
   computedFields: {
     ...computedFields,
-
     structuredData: {
       type: 'json',
       resolve: (doc) => ({
@@ -154,7 +120,7 @@ export const Blog = defineDocumentType(() => ({
         dateModified: doc.lastmod || doc.date,
         description: doc.summary,
         image: doc.images ? doc.images[0] : siteMetadata.socialBanner,
-        url: `${siteMetadata.siteUrl}/${doc.language}/blog/${doc.slug}`,
+        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
       }),
     },
   },
@@ -166,13 +132,12 @@ export const Authors = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     name: { type: 'string', required: true },
-    language: { type: 'string', required: true },
-    default: {type: 'boolean'},
     avatar: { type: 'string' },
     occupation: { type: 'string' },
     company: { type: 'string' },
     email: { type: 'string' },
     twitter: { type: 'string' },
+    bluesky: { type: 'string' },
     linkedin: { type: 'string' },
     github: { type: 'string' },
     layout: { type: 'string' },
@@ -206,6 +171,7 @@ export default makeSource({
         },
       ],
       rehypeKatex,
+      rehypeKatexNoTranslate,
       [rehypeCitation, { path: path.join(root, 'data') }],
       [rehypePrismPlus, { defaultLanguage: 'js', ignoreMissing: true }],
       rehypePresetMinify,

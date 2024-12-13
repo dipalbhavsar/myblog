@@ -7,26 +7,10 @@ module.exports = {
   content: [
     './node_modules/pliny/**/*.js',
     './app/**/*.{js,ts,jsx,tsx}',
+    './pages/**/*.{js,ts,tsx}',
     './components/**/*.{js,ts,tsx}',
     './layouts/**/*.{js,ts,tsx}',
     './data/**/*.mdx',
-  ],
-  sans: [
-    "Inter",
-    "ui-sans-serif",
-    "system-ui",
-    "-apple-system",
-    "system-ui",
-    "Segoe UI",
-    "Roboto",
-    "Helvetica Neue",
-    "Arial",
-    "Noto Sans",
-    "sans-serif",
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    "Noto Color Emoji",
   ],
   darkMode: 'class',
   theme: {
@@ -42,8 +26,12 @@ module.exports = {
       },
       colors: {
         primary: colors.pink,
-        heading: colors.blue,
         gray: colors.gray,
+      },
+      zIndex: {
+        60: '60',
+        70: '70',
+        80: '80',
       },
       typography: ({ theme }) => ({
         DEFAULT: {

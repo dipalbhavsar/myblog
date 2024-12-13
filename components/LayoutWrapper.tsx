@@ -1,18 +1,18 @@
-import { Space_Grotesk } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import SectionContainer from './SectionContainer'
-import Footer from './navigation/Footer'
+import Footer from './Footer'
 import { ReactNode } from 'react'
-import Header from './navigation/Header'
+import Header from './Header'
 
-interface LayoutWrapperProps {
+interface Props {
   children: ReactNode
 }
 
-const inter = Space_Grotesk({
+const inter = Inter({
   subsets: ['latin'],
 })
 
-const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
+const LayoutWrapper = ({ children }: Props) => {
   return (
     <SectionContainer>
       <div className={`${inter.className} flex h-screen flex-col justify-between font-sans`}>
