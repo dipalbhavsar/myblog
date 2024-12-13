@@ -2,7 +2,7 @@
 
 # To get started with Next.js see: https://nextjs.org/docs/getting-started
 
-name: Deploy About Blog site to GitHub Pages By Dipal
+name: Deploy MyBlog V0.13122024 
 
 on:
   # Runs on pushes targeting the default branch
@@ -94,13 +94,9 @@ jobs:
       url: ${{steps.deployment.outputs.page_url}}
       
     steps:
-    - uses: actions/download-artifact@master
-      with:
-        name: page
-        path: .
     - uses: actions/configure-pages@v1
     - uses: actions/upload-pages-artifact@v1
       with:
         path: .
     - id: deployment
-      uses: actions/deploy-pages@main      
+      uses: actions/deploy-pages@public      
