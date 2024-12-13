@@ -71,10 +71,12 @@ jobs:
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
       - name: Upload artifact
+        if: github.ref == 'refs/heads/public'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
-
+          # location of the coverage artifacts
+          path: "./out"
+ 
   # # Deployment job
   # deploy:
   #   environment:
