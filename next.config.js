@@ -60,7 +60,6 @@ module.exports = () => {
     eslint: {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
-    swcMinify: true,
     images: {
       remotePatterns: [
         {

@@ -54,7 +54,7 @@ export const DarkModeSwitch: React.FC<Props> = ({
   size = 24,
   animationProperties = defaultProperties,
   moonColor = 'white',
-  sunColor = 'black',
+  sunColor = 'gray',
   style,
   ...rest
 }) => {
