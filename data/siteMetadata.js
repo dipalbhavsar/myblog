@@ -1,8 +1,8 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Dipal Bhavsar Blog',
-  author: 'Dipal Bhavsar',
-  headerTitle: 'Dipal Bhavsar',
+  title: 'Test Blog',
+  author: 'Test',
+  headerTitle: 'Test',
   description: 'This site is developed using React, Next.js, i18n and Tailwind.css. Hosted in GitHub page. This site is intense for self learning and exploring different technologies.',
   language: 'en',
   theme: 'system', // system, dark or light
