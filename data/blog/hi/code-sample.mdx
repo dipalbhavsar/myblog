@@ -1,0 +1,40 @@
+---
+title: नमूना .md फाइल
+date: '2016-03-08'
+language: hi
+tags: ['markdown', 'code', 'features']
+authors: ['dipalbhavsar']
+draft: false
+summary: कोड ब्लॉक्स और सिंटैक्स हाइलाइटिंग के साथ एक मार्कडाउन फाइल का उदाहरण
+---
+
+मार्कडाउन के साथ एक नमूना पोस्ट।
+
+## इनलाइन हाइलाइटिंग
+
+इनलाइन हाइलाइटिंग का नमूना sum = parseInt(num1) + parseInt(num2)
+
+## कोड ब्लॉक्स
+
+कुछ जावास्क्रिप्ट कोड
+
+```javascript
+var num1, num2, sum
+num1 = prompt('Enter first number')
+num2 = prompt('Enter second number')
+sum = parseInt(num1) + parseInt(num2) // "+" means "add"
+alert('Sum = ' + sum) // "+" means combine into a string
+```
+
+कुछ पायथन कोड 🐍
+
+```python
+def fib():
+    a, b = 0, 1
+    while True:            # First iteration:
+        yield a            # yield 0 to start with and then
+        a, b = b, a + b    # a will now be 1, and b will also be 1, (0 + 1)
+
+for index, fibonacci_number in zip(range(10), fib()):
+     print('{i:3}: {f:3}'.format(i=index, f=fibonacci_number))
+```
