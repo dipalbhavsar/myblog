@@ -1,0 +1,139 @@
+---
+title: OLS अनुमानक को व्युत्पन्न करना
+date: '2020-12-21'
+language: hi
+tags: ['next-js', 'math', 'ols']
+authors: ['dipalbhavsar']
+draft: false
+summary: कैसे मैट्रिक्स अभ्यावरण और KaTeX की मदद से गणित टाइपसेटिंग का उपयोग करते हुए OLS अनुमानक को व्युत्पन्न करें.
+---
+
+# परिचय
+
+गणितीय समीकरणों का पार्सिंग और प्रदर्शन इस ब्लॉग टेम्पलेट में शामिल है। गणित का पार्सिंग remark-math और rehype-katex द्वारा सक्षम किया गया है। KaTeX और इसका संबंधित फॉन्ट _document.js में शामिल किया गया है, इसलिए आप इसे किसी भी पेज पर उपयोग कर सकते हैं। 1
+
+इनलाइन गणितीय प्रतीकों को $ प्रतीक के बीच शब्दों को समेटकर शामिल किया जा सकता है।
+
+गणित कोड ब्लॉक्स को $$ से दर्शाया जाता है।
+
+यदि आप गणित के बजाय $ चिह्न का उपयोग करना चाहते हैं, तो आप इसे एस्केप कर सकते हैं (\$), या HTML एंटिटी निर्दिष्ट कर सकते हैं (&dollar;) 2
+
+इनलाइन या मैन्युअल रूप से नामांकित फुटनोट्स भी समर्थित हैं। ऊपर दिए गए लिंक पर क्लिक करें उन्हें क्रियान्वित होते हुए देखने के लिए।
+
+# OLS अनुमानक को व्युत्पन्न करना
+
+मैट्रिक्स अभ्यावरण का उपयोग करते हुए, $n$ को अवलोकनों की संख्या और $k$ को रिग्रेशर्स की संख्या के रूप में निर्दिष्ट करें।
+
+आउटकम वेरिएबल्स का वेक्टर $\mathbf{Y}$ एक $n \times 1$ मैट्रिक्स है,
+
+```tex
+\mathbf{Y} = \left[\begin{array}
+  {c}
+  y_1 \\
+  . \\
+  . \\
+  . \\
+  y_n
+\end{array}\right]
+```
+
+$$
+\mathbf{Y} = \left[\begin{array}
+  {c}
+  y_1 \\
+  . \\
+  . \\
+  . \\
+  y_n
+\end{array}\right]
+$$
+
+रिग्रेशर्स का मैट्रिक्स $\mathbf{X}$ एक $n \times k$ मैट्रिक्स है (या प्रत्येक पंक्ति एक $k \times 1$ वेक्टर है),
+
+```latex
+\mathbf{X} = \left[\begin{array}
+  {ccccc}
+  x_{11} & . & . & . & x_{1k} \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  x_{n1} & . & . & . & x_{nn}
+\end{array}\right] =
+\left[\begin{array}
+  {c}
+  \mathbf{x}'_1 \\
+  . \\
+  . \\
+  . \\
+  \mathbf{x}'_n
+\end{array}\right]
+```
+
+$$
+\mathbf{X} = \left[\begin{array}
+  {ccccc}
+  x_{11} & . & . & . & x_{1k} \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  . & . & . & . & .  \\
+  x_{n1} & . & . & . & x_{nn}
+\end{array}\right] =
+\left[\begin{array}
+  {c}
+  \mathbf{x}'_1 \\
+  . \\
+  . \\
+  . \\
+  \mathbf{x}'_n
+\end{array}\right]
+$$
+
+त्रुटि टर्म्स का वेक्टर $\mathbf{U}$ भी एक $n \times 1$ मैट्रिक्स है।
+
+कभी-कभी वेक्टर अभ्यावरण का उपयोग करना आसान हो सकता है। संगति के लिए, मैं एक वेक्टर को दर्शाने के लिए बोल्ड छोटे x का उपयोग करूंगा और मैट्रिक्स को दर्शाने के लिए बड़े अक्षरों का उपयोग करूंगा। एकल अवलोकनों को उपसर्ग द्वारा दर्शाया जाता है।
+
+## न्यूनतम वर्ग
+
+**प्रारंभ:**:  
+$$y_i = \mathbf{x}'_i \beta + u_i$$
+
+**कल्पनाएँ**:
+
+1. रैखिकता (जैसा कि ऊपर दिया गया है)
+2. $E(\mathbf{U}|\mathbf{X}) = 0$ (सशर्त स्वतंत्रता)
+3. rank($\mathbf{X}$) = $k$ (कोई मल्टी-कोलिनिएरिटी नहीं, अर्थात् पूर्ण रैंक)
+4. $Var(\mathbf{U}|\mathbf{X}) = \sigma^2 I_n$ (हॉमोसकेडास्टिकिटी)
+
+**लक्ष्य**:  
+वह $\beta$ ढूंढें जो त्रुटियों के वर्गों का योग न्यूनतम करता है:
+
+$$
+Q = \sum_{i=1}^{n}{u_i^2} = \sum_{i=1}^{n}{(y_i - \mathbf{x}'_i\beta)^2} = (Y-X\beta)'(Y-X\beta)
+$$
+
+**समाधान**:  
+सुझाव: $Q$ एक $1 \times 1$ स्कैलर है, सममिति के अनुसार $\frac{\partial b'Ab}{\partial b} = 2Ab$।
+
+मैट्रिक्स व्युत्पन्न लें w.r.t $\beta$:
+
+```tex
+\begin{aligned}
+  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
+  \beta'\mathbf{X}'\mathbf{X}\beta \\
+                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
+  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
+  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
+                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
+\end{aligned}
+```
+
+$$
+\begin{aligned}
+  \min Q           & = \min_{\beta} \mathbf{Y}'\mathbf{Y} - 2\beta'\mathbf{X}'\mathbf{Y} +
+  \beta'\mathbf{X}'\mathbf{X}\beta \\
+                   & = \min_{\beta} - 2\beta'\mathbf{X}'\mathbf{Y} + \beta'\mathbf{X}'\mathbf{X}\beta \\
+  \text{[FOC]}~~~0 & =  - 2\mathbf{X}'\mathbf{Y} + 2\mathbf{X}'\mathbf{X}\hat{\beta}                  \\
+  \hat{\beta}      & = (\mathbf{X}'\mathbf{X})^{-1}\mathbf{X}'\mathbf{Y}                              \\
+                   & = (\sum^{n} \mathbf{x}_i \mathbf{x}'_i)^{-1} \sum^{n} \mathbf{x}_i y_i
+\end{aligned}
+$$
